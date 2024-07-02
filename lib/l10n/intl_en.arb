@@ -1,0 +1,15 @@
+{
+  "@@locale": "en",
+
+  "appName": "International Demo",
+
+  "login": "login",
+  "register": "register",
+  "pageHomeTitle" : "Welcome {firstName}",
+  "@pageHomeTitle" : {
+    "description" : "Welcome message on the Home screen",
+    "placeholders": {
+      "firstName": {}
+    }
+  }
+}

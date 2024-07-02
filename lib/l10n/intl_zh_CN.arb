@@ -1,0 +1,16 @@
+{
+  "@@locale": "zh",
+
+  "appName": "国际化例子",
+
+  "login": "登录",
+  "register": "注册",
+
+  "pageHomeTitle" : "欢迎 {firstName}",
+  "@pageHomeTitle" : {
+    "description" : "首页欢迎语",
+    "placeholders": {
+      "firstName": {}
+    }
+  }
+}
