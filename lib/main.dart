@@ -4,9 +4,22 @@ import 'package:drawinglots/page/home.dart';
 import 'package:drawinglots/page/import.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
+var logger = Logger(
+  printer: PrettyPrinter(),
+);
+
+var loggerNoStack = Logger(
+  printer: PrettyPrinter(methodCount: 0),
+);
+
 void main() async {
+
+  loggerNoStack.i('Info message');
+
+
   //数据持久化 初始化
   await GetStorage.init();
 
@@ -19,7 +32,6 @@ void main() async {
   ));
 }
 
-final Map<String, List<String>> studentColl = {};
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});

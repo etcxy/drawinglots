@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     luckyStuInfo = "lucky";
+    loggerNoStack.i('Info message home');
 
     _stuColl = context.read<StudentCollection>();
 
