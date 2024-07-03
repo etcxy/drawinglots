@@ -108,3 +108,8 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 flutter_intl:
   enabled: true
+
+  fonts:
+  - family: HanSansCN
+    fonts:
+      - asset: assets/fonts/SourceHanSansCN-Normal.ttf

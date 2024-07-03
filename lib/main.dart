@@ -16,9 +16,7 @@ var loggerNoStack = Logger(
 );
 
 void main() async {
-
   loggerNoStack.i('Info message');
-
 
   //数据持久化 初始化
   await GetStorage.init();
@@ -72,6 +70,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: 'HanSansCN'),
       home: Scaffold(
         appBar: AppBar(
           // backgroundColor: ,
