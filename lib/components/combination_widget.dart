@@ -53,7 +53,7 @@ class _CombinationWidgetState extends State<CombinationWidget> {
                 letterSpacing: 8,
               ),
             ),
-            randomString: Source.alphabets,
+            randomString: Source.lowercase,
             onFinished: () {
               // debugPrint('============');
               // context.read<StuReady>().update(true);
