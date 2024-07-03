@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../page/home.dart';
 import 'base_b_widget.dart';
 
 // class CombinationWidget extends StatelessWidget {
@@ -42,7 +41,7 @@ class _CombinationWidgetState extends State<CombinationWidget> {
         children: [
           RandomTextReveal(
             key: globalKey,
-            initialText: 'biu~',
+            initialText: 'lucky~',
             shouldPlayOnStart: false,
             text: widget.model.stuName!,
             duration: Duration(seconds: context.read<StuReady>().rollDuration),
@@ -64,24 +63,6 @@ class _CombinationWidgetState extends State<CombinationWidget> {
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
           ),
-          // Text(
-          //   model.stuName,
-          //   style: const TextStyle(
-          //       fontWeight: FontWeight.bold,
-          //       fontSize: 20,
-          //       color: Colors.black),
-          // ),
-          // Text(
-          //   model.stuID,
-          //   style: TextStyle(
-          //       color: Colors.black26,
-          //       fontSize: 11.0,
-          //       // height: 1.2,
-          //       fontFamily: "Courier",
-          //       background: Paint()..color = Colors.yellow,
-          //       // decoration:TextDecoration.underline,
-          //       decorationStyle: TextDecorationStyle.dashed),
-          // ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -117,11 +98,6 @@ class _CombinationWidgetState extends State<CombinationWidget> {
               ),
             ],
           ),
-          // Text(
-          //   model.stuGroup,
-          //   style: const TextStyle(
-          //       fontSize: 11, color: Colors.black26),
-          // ),
         ],
       ),
     );
