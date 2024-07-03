@@ -50,6 +50,10 @@ class _MyAppState extends State<MyApp> {
         "计算机一班": ["202104&赵六"],
       });
     }
+
+    StudentCollection stu =
+        Provider.of<StudentCollection>(context, listen: false);
+    stu.init();
   }
 
   @override
@@ -121,17 +125,83 @@ class _MyAppState extends State<MyApp> {
 class StudentCollection with ChangeNotifier {
   Map<String, List<String>> _studentColl = {};
 
+  //所有
+  Map<String, List<String>> _stuAll = {};
+
+  //选过
+  Map<String, List<String>> _todayChosenMap = {};
+
   Map<String, List<String>> get studentColl => _studentColl;
 
-  void add(String name, List<String> list) {
-    _studentColl[name] = list;
+  Map<String, List<String>> get stuAll => _stuAll;
+
+  Map<String, List<String>> get todayChosenMap => _todayChosenMap;
+
+  final box = GetStorage();
+
+  void init() {
+    if (box.hasData('allMap')) {
+      _stuAll = box.read('allMap');
+    }
+    if (box.hasData('todayChosenMap')) {
+      _todayChosenMap = box.read('todayChosenMap');
+    }
+    // notifyListeners();
+  }
+
+  /// 导入功能:
+  /// 1. 导入数据
+  /// 2. 清空todayChosenMap
+  Future<void> importMap(Map<String, List<String>> map) async {
+    _stuAll = map;
+    _todayChosenMap.clear();
     notifyListeners();
+  }
+
+  /// 清空所有map
+  void eraseMap() {
+    _stuAll.clear();
+    _todayChosenMap.clear();
+    notifyListeners();
+  }
+
+  /// 往allMap里添加
+  void add2Map(String className, String stuName) {}
+
+  /// 往todayChosenMap里添加
+  void add2TodayChosenMap(String className, String stuName) {
+    if (_todayChosenMap.containsKey(className)) {
+      _todayChosenMap[className]?.add(stuName);
+    } else {
+      _todayChosenMap[className] = [stuName];
+    }
+    // notifyListeners();
+  }
+
+  /// 删除todayChosenMap里的数据
+  void deleteFromTodayChosenMap(String className, String stuName) {
+    _todayChosenMap[className]?.remove(stuName);
+  }
+
+  /// 重置todayChosenMap里的数据
+  void resetTodayChosenMap() {
+    _todayChosenMap.clear();
+    box.remove('todayChosenMap');
+  }
+
+  /// 保存数据到本地
+  void flushChosenMap() {
+    box.write('todayChosenMap', _todayChosenMap);
+  }
+
+  void flushAllMap() {
+    box.write('allMap', _stuAll);
   }
 }
 
 class StuReady with ChangeNotifier {
   bool _isShow = true;
-  int _rollDuration = 2;
+  final int _rollDuration = 2;
 
   int get rollDuration => _rollDuration;
 

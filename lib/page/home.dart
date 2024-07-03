@@ -4,12 +4,8 @@ import 'package:drawinglots/components/combination_widget.dart';
 import 'package:drawinglots/main.dart';
 import 'package:drawinglots/model/stu_model.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 
-/**
- * 每次提交后，flush
- */
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -18,41 +14,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? name;
+  String? luckyStuInfo;
   StuModel thisStu = StuModel(stuGroup: "group", stuID: "id", stuName: 'name');
 
   final Random random = Random();
-  final box = GetStorage();
-
-  Map<String, List<String>>? allMap = {};
-  Map<String, List<String>>? todayChosenMap = {};
 
   List<String> easyList = [];
+  late StudentCollection stuColl;
 
   @override
   void initState() {
     super.initState();
-    name = "unknown";
-    if (box.hasData('latest_list')) {
-      name = box.read('latest_list');
-    }
-    if (box.hasData('allMap')) {
-      allMap = box.read('allMap');
-    }
-    if (box.hasData('todayChosenMap')) {
-      todayChosenMap = box.read('todayChosenMap');
-    }
-    updatePool();
-  }
+    luckyStuInfo = "lucky";
 
-  void updatePool() {
-    allMap?.forEach((key, value) {
+    stuColl = context.read<StudentCollection>();
+    Map<String, List<String>> allMap = stuColl.stuAll;
+    Map<String, List<String>> todayChosenMap = stuColl.todayChosenMap;
+
+    allMap.forEach((key, value) {
       for (var element in value) {
         easyList.add('$key|$element');
       }
     });
 
-    todayChosenMap?.forEach((key, value) {
+    todayChosenMap.forEach((key, value) {
       for (var element in value) {
         easyList.remove('$key|$element');
       }
@@ -61,67 +46,26 @@ class _HomePageState extends State<HomePage> {
 
   void randomStu() {
     int r = random.nextInt(easyList.length);
-    name = easyList[r];
+    luckyStuInfo = easyList[r];
 
-    String? className = name?.split('|')[0];
-    String? idAndName = name?.split('|')[1];
+    String? className = luckyStuInfo?.split('|')[0];
+    String? idAndName = luckyStuInfo?.split('|')[1];
     String? id = idAndName?.split('&')[0];
     String? stuName = idAndName?.split('&')[1];
 
-    if (todayChosenMap?[className] == null) {
-      todayChosenMap?[className!] = [];
-    }
-    todayChosenMap?[className]?.add(idAndName!);
-    print('chosenMap:${todayChosenMap}');
-    easyList.remove(name);
+    stuColl.add2TodayChosenMap(className!, idAndName!);
+    easyList.remove(luckyStuInfo);
 
-    box.write('todayChosenMap', todayChosenMap);
-    print('todayChosenMap****:${box.read('todayChosenMap')}');
+    print('===========');
+    print('easyList:$easyList');
+    print('stuColl.todayChosenMap:${stuColl.todayChosenMap}');
+    print('===========');
 
     setState(() {
-      thisStu = StuModel(stuGroup: className!, stuID: id!, stuName: stuName!);
+      thisStu = StuModel(stuGroup: className, stuID: id!, stuName: stuName!);
     });
   }
 
-  @Deprecated('用不到了')
-  void setTask(int times) {
-    if (times > 70) {
-      times -= 2;
-    } else if (times > 40 && times <= 70) {
-      times = times - 4;
-    } else if (times <= 40 && times > 0) {
-      times -= 8;
-    } else {
-      print('name:$name');
-      String? className = name?.split('|')[0];
-      String? idAndName = name?.split('|')[1];
-      String? id = idAndName?.split('&')[0];
-      String? stuName = idAndName?.split('&')[1];
-
-      if (todayChosenMap?[className] == null) {
-        todayChosenMap?[className!] = [];
-      }
-      todayChosenMap?[className]?.add(idAndName!);
-      print('chosenMap:${todayChosenMap}');
-      easyList.remove(name);
-
-      box.write('todayChosenMap', todayChosenMap);
-      print('todayChosenMap****:${box.read('todayChosenMap')}');
-
-      return;
-    }
-    //异步执行 https://juejin.cn/post/6844903769793118215
-    Future.delayed(
-        Duration(milliseconds: (200 - times)),
-        () => {
-              // print('当前时间：${DateTime.now()}'),
-              setState(() {
-                int r = random.nextInt(easyList.length);
-                name = easyList[r];
-              }),
-              setTask(times),
-            });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,7 +96,9 @@ class _HomePageState extends State<HomePage> {
 
                   Future.delayed(
                       Duration(
-                          milliseconds: context.read<StuReady>().rollDuration*1000 + 20),
+                          milliseconds:
+                              context.read<StuReady>().rollDuration * 1000 +
+                                  20),
                       () => {
                             setState(() {
                               context.read<StuReady>().visible();
