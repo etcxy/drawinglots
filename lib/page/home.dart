@@ -15,57 +15,61 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String? luckyStuInfo;
-  StuModel thisStu = StuModel(stuGroup: "group", stuID: "id", stuName: 'name');
+  StuModel _thisStu = StuModel(stuGroup: "group", stuID: "id", stuName: 'name');
 
-  final Random random = Random();
+  final Random _random = Random();
 
-  List<String> easyList = [];
-  late StudentCollection stuColl;
+  final List<String> _easyList = [];
+  late StudentCollection _stuColl;
+
+  bool _tipVisible = true;
 
   @override
   void initState() {
     super.initState();
     luckyStuInfo = "lucky";
 
-    stuColl = context.read<StudentCollection>();
-    Map<String, List<String>> allMap = stuColl.stuAll;
-    Map<String, List<String>> todayChosenMap = stuColl.todayChosenMap;
+    _stuColl = context.read<StudentCollection>();
+    Map<String, List<String>> allMap = _stuColl.stuAll;
+    Map<String, List<String>> todayChosenMap = _stuColl.todayChosenMap;
 
     allMap.forEach((key, value) {
       for (var element in value) {
-        easyList.add('$key|$element');
+        _easyList.add('$key|$element');
       }
     });
 
     todayChosenMap.forEach((key, value) {
       for (var element in value) {
-        easyList.remove('$key|$element');
+        _easyList.remove('$key|$element');
       }
     });
+
+    Future.delayed(
+        const Duration(seconds: 2),
+        () => {
+              setState(() {
+                _tipVisible = false;
+              }),
+            });
   }
 
   void randomStu() {
-    int r = random.nextInt(easyList.length);
-    luckyStuInfo = easyList[r];
+    int r = _random.nextInt(_easyList.length);
+    luckyStuInfo = _easyList[r];
 
     String? className = luckyStuInfo?.split('|')[0];
     String? idAndName = luckyStuInfo?.split('|')[1];
     String? id = idAndName?.split('&')[0];
     String? stuName = idAndName?.split('&')[1];
 
-    stuColl.add2TodayChosenMap(className!, idAndName!);
-    easyList.remove(luckyStuInfo);
-
-    print('===========');
-    print('easyList:$easyList');
-    print('stuColl.todayChosenMap:${stuColl.todayChosenMap}');
-    print('===========');
+    _stuColl.add2TodayChosenMap(className!, idAndName!);
+    _easyList.remove(luckyStuInfo);
 
     setState(() {
-      thisStu = StuModel(stuGroup: className, stuID: id!, stuName: stuName!);
+      _thisStu = StuModel(stuGroup: className, stuID: id!, stuName: stuName!);
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +81,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CombinationWidget(
-              model: thisStu,
+              model: _thisStu,
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width / 5,
@@ -85,7 +89,8 @@ class _HomePageState extends State<HomePage> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  if (easyList.isEmpty) {
+
+                  if (_easyList.isEmpty) {
                     //todo 提示剩余列表为空
                     return;
                   }
@@ -105,7 +110,19 @@ class _HomePageState extends State<HomePage> {
                             }),
                           });
                 },
-                child: const Text('Go!'))
+                onLongPress: () {
+                  _stuColl.resetTodayChosenMap();
+                },
+                child: const Text('Go!')),
+            Visibility(
+                visible: _tipVisible,
+                child: const Text(
+                  'tips:长按按钮，\n可重置被选中的名单',
+                  style: TextStyle(
+                      fontSize: 9,
+                      color: Colors.black26,
+                      textBaseline: TextBaseline.ideographic),
+                )),
           ],
         ),
       ),
