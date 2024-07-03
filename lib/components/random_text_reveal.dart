@@ -96,7 +96,6 @@ class RandomTextRevealState extends State<RandomTextReveal>
 
   @override
   void dispose() {
-
     _controller.dispose();
     super.dispose();
   }
@@ -143,7 +142,6 @@ class RandomTextRevealState extends State<RandomTextReveal>
   }
 
   String _myAnimatedText({required String text, required int value}) {
-
     if (!_controller.isAnimating && !_controller.isCompleted) {
       return widget.initialText ?? '';
     }

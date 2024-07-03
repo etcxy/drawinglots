@@ -186,7 +186,7 @@ class StudentCollection with ChangeNotifier {
   /// 重置todayChosenMap里的数据
   void resetTodayChosenMap() {
     _todayChosenMap.clear();
-    box.remove('todayChosenMap');
+    box.write('todayChosenMap', _todayChosenMap);
   }
 
   /// 保存数据到本地
