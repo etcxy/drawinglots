@@ -31,20 +31,9 @@ class _HomePageState extends State<HomePage> {
     luckyStuInfo = "lucky";
 
     _stuColl = context.read<StudentCollection>();
-    Map<String, List<String>> allMap = _stuColl.stuAll;
-    Map<String, List<String>> todayChosenMap = _stuColl.todayChosenMap;
 
-    allMap.forEach((key, value) {
-      for (var element in value) {
-        _easyList.add('$key|$element');
-      }
-    });
-
-    todayChosenMap.forEach((key, value) {
-      for (var element in value) {
-        _easyList.remove('$key|$element');
-      }
-    });
+    // 初始化easylist
+    resetEasyList();
 
     Future.delayed(
         const Duration(seconds: 2),
@@ -55,6 +44,7 @@ class _HomePageState extends State<HomePage> {
             });
   }
 
+  /// 随机名单
   void randomStu() {
     int r = _random.nextInt(_easyList.length);
     luckyStuInfo = _easyList[r];
@@ -69,6 +59,25 @@ class _HomePageState extends State<HomePage> {
 
     setState(() {
       _thisStu = StuModel(stuGroup: className, stuID: id!, stuName: stuName!);
+    });
+  }
+
+  /// 重置easylist列表
+  void resetEasyList() {
+    _easyList.clear();
+    Map<String, List<String>> allMap = _stuColl.stuAll;
+    Map<String, List<String>> todayChosenMap = _stuColl.todayChosenMap;
+
+    allMap.forEach((key, value) {
+      for (var element in value) {
+        _easyList.add('$key|$element');
+      }
+    });
+
+    todayChosenMap.forEach((key, value) {
+      for (var element in value) {
+        _easyList.remove('$key|$element');
+      }
     });
   }
 
@@ -120,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                     style: ToastificationStyle.flat,
                   );
                   _stuColl.resetTodayChosenMap();
-                  print('_stuColl:${_stuColl.todayChosenMap}');
+                  resetEasyList();
                 },
                 child: const Text('Go!')),
             Visibility(
