@@ -47,6 +47,8 @@ dependencies:
   scrollable_list_tab_scroller: ^2.0.1
 #  random_text_reveal: ^0.0.7
   google_fonts: ^6.2.0
+  toastification: ^2.0.0
+
 
 dev_dependencies:
   flutter_test:
