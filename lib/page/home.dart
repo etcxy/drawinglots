@@ -22,11 +22,13 @@ class _HomePageState extends State<HomePage> {
 
   final List<String> _easyList = [];
   late StudentCollection _stuColl;
-
-  bool _tipVisible = true;
+  bool _isFirst = false; // 是否是第一次进入
 
   @override
   void initState() {
+    //TODO 调查清楚为什么这里会多次被调用，按理说init方法只会被调用一次
+    // logger.d('执行initstate');
+    // _isFirst = false;
     super.initState();
     luckyStuInfo = "lucky";
     loggerNoStack.i('Info message home');
@@ -35,20 +37,13 @@ class _HomePageState extends State<HomePage> {
 
     // 初始化easylist
     resetEasyList();
-
-    Future.delayed(
-        const Duration(seconds: 2),
-        () => {
-              setState(() {
-                _tipVisible = false;
-              }),
-            });
   }
 
   /// 随机名单
   void randomStu() {
     int r = _random.nextInt(_easyList.length);
     luckyStuInfo = _easyList[r];
+    logger.d(luckyStuInfo);
 
     String? className = luckyStuInfo?.split('|')[0];
     String? idAndName = luckyStuInfo?.split('|')[1];
@@ -84,6 +79,29 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //每次进入页面，都重新初始化easylist列表
+    resetEasyList();
+
+    // logger.d(_easyList);
+    // logger.d(_stuColl.stuAll);
+    // logger.d(_stuColl.todayChosenMap);
+
+    if (_isFirst) {
+      Future.delayed(
+          Duration(seconds: 1),
+          () => {
+                toastification.show(
+                  context: context,
+                  // optional if you use ToastificationWrapper
+                  title: const Text('长按按钮，可重置被选中的名单'),
+                  autoCloseDuration: const Duration(seconds: 3),
+                  type: ToastificationType.info,
+                  style: ToastificationStyle.flat,
+                )
+              });
+      _isFirst = false;
+    }
+
     return SizedBox(
       width: double.infinity,
       height: double.infinity,
@@ -101,7 +119,13 @@ class _HomePageState extends State<HomePage> {
             ElevatedButton(
                 onPressed: () {
                   if (_easyList.isEmpty) {
-                    //todo 提示剩余列表为空
+                    toastification.show(
+                      context: context,
+                      title: const Text('全部都抽过一遍啦',style: TextStyle(fontFamily: 'HanSansCN'),),
+                      autoCloseDuration: const Duration(seconds: 3),
+                      type: ToastificationType.success,
+                      style: ToastificationStyle.minimal,
+                    );
                     return;
                   }
                   // setTask(100);
@@ -133,15 +157,6 @@ class _HomePageState extends State<HomePage> {
                   resetEasyList();
                 },
                 child: const Text('Go!')),
-            Visibility(
-                visible: _tipVisible,
-                child: const Text(
-                  'tips:长按按钮，\n可重置被选中的名单',
-                  style: TextStyle(
-                      fontSize: 9,
-                      color: Colors.black26,
-                      textBaseline: TextBaseline.ideographic),
-                )),
           ],
         ),
       ),
