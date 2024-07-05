@@ -30,7 +30,6 @@ void main() async {
   ));
 }
 
-
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -41,26 +40,29 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isShow = true;
   int _itermPage = 1;
+  final _box = GetStorage();
 
-  @override
-  void initState() {
-    super.initState();
-    final box = GetStorage();
-    box.erase();
+  void debugGenerateMap() {
+    _box.erase();
     //初始化数据
-    if (!box.hasData('allMap')) {
-      box.write('allMap', {
+    if (!_box.hasData('allMap')) {
+      _box.write('allMap', {
         "计算机一班": ["202101&张三", "202102&李四", "202103&王五", "202104&赵六"],
         "计算机二班": ["202111&张1", "202112&李2", "202113&王3", "202114&赵4"],
       });
     }
 
-    if (!box.hasData('todayChosenMap')) {
-      box.write('todayChosenMap', {
+    if (!_box.hasData('todayChosenMap')) {
+      _box.write('todayChosenMap', {
         "计算机一班": ["202104&赵六"],
       });
     }
+  }
 
+  @override
+  void initState() {
+    super.initState();
+    debugGenerateMap();
     StudentCollection stu =
         Provider.of<StudentCollection>(context, listen: false);
     stu.init();
@@ -74,7 +76,7 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         appBar: AppBar(
           // backgroundColor: ,
-          title: const Text('biubiubiu'),
+          title: const Text('biu-biu-biu'),
           //标题居中
           centerTitle: false,
           leading: IconButton(
@@ -164,9 +166,14 @@ class StudentCollection with ChangeNotifier {
   /// 1. 导入数据
   /// 2. 清空todayChosenMap
   Future<void> importMap(Map<String, List<String>> map) async {
-    _stuAll = map;
+    _stuAll.clear();
     _todayChosenMap.clear();
-    notifyListeners();
+
+    _stuAll.addAll(map);
+    logger.d(map);
+
+    flushAllMap();
+    // notifyListeners();
   }
 
   /// 清空所有map
