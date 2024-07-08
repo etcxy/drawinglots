@@ -1,6 +1,6 @@
 import 'package:drawinglots/components/random_text_reveal.dart';
 import 'package:drawinglots/main.dart';
-import 'package:drawinglots/model/stu_model.dart';
+import 'package:drawinglots/model/user_struct.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +20,7 @@ import 'base_b_widget.dart';
 // }
 
 class CombinationWidget extends StatefulWidget {
-  StuModel model; //数据模型
+  UserStruct model; //数据模型
   final VoidCallback? onPressed;
 
   CombinationWidget({super.key, required this.model, this.onPressed});
@@ -43,7 +43,7 @@ class _CombinationWidgetState extends State<CombinationWidget> {
             key: globalKey,
             initialText: 'lucky~',
             shouldPlayOnStart: false,
-            text: widget.model.stuName!,
+            text: widget.model.userName!,
             duration: Duration(seconds: context.read<StuReady>().rollDuration),
             style: GoogleFonts.notoSansHk(
               textStyle: const TextStyle(
@@ -76,7 +76,7 @@ class _CombinationWidgetState extends State<CombinationWidget> {
                 child: Visibility(
                   visible: context.watch<StuReady>().isShow,
                   child: Text(
-                    widget.model.stuGroup!,
+                    widget.model.userGroup!,
                     style: const TextStyle(fontSize: 8, color: Colors.white),
                   ),
                 ),
@@ -91,7 +91,7 @@ class _CombinationWidgetState extends State<CombinationWidget> {
                 child: Visibility(
                   visible: context.watch<StuReady>().isShow,
                   child: Text(
-                    widget.model.stuID!,
+                    widget.model.userID!,
                     style: const TextStyle(fontSize: 8, color: Colors.white),
                   ),
                 ),

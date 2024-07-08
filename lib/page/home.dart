@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:drawinglots/components/combination_widget.dart';
 import 'package:drawinglots/main.dart';
-import 'package:drawinglots/model/stu_model.dart';
+import 'package:drawinglots/model/user_struct.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
@@ -15,12 +15,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? luckyStuInfo;
-  StuModel _thisStu = StuModel(stuGroup: "group", stuID: "id", stuName: 'name');
+  UserStruct _thisStu = UserStruct("group", "id", 'name');
 
   final Random _random = Random();
 
-  final List<String> _easyList = [];
+  final List<UserStruct> _easyList = [];
   late StudentCollection _stuColl;
   bool _isFirst = false; // 是否是第一次进入
 
@@ -30,8 +29,6 @@ class _HomePageState extends State<HomePage> {
     // logger.d('执行initstate');
     // _isFirst = false;
     super.initState();
-    luckyStuInfo = "lucky";
-    loggerNoStack.i('Info message home');
 
     _stuColl = context.read<StudentCollection>();
 
@@ -42,37 +39,29 @@ class _HomePageState extends State<HomePage> {
   /// 随机名单
   void randomStu() {
     int r = _random.nextInt(_easyList.length);
-    luckyStuInfo = _easyList[r];
-    logger.d(luckyStuInfo);
+    _thisStu = _easyList[r];
 
-    String? className = luckyStuInfo?.split('|')[0];
-    String? idAndName = luckyStuInfo?.split('|')[1];
-    String? id = idAndName?.split('&')[0];
-    String? stuName = idAndName?.split('&')[1];
+    _stuColl.add2TodayChosenMap(_thisStu);
+    _easyList.remove(_thisStu);
 
-    _stuColl.add2TodayChosenMap(className!, idAndName!);
-    _easyList.remove(luckyStuInfo);
-
-    setState(() {
-      _thisStu = StuModel(stuGroup: className, stuID: id!, stuName: stuName!);
-    });
+    setState(() {});
   }
 
   /// 重置easylist列表
   void resetEasyList() {
     _easyList.clear();
-    Map<String, List<String>> allMap = _stuColl.stuAll;
-    Map<String, List<String>> todayChosenMap = _stuColl.todayChosenMap;
+    Map<String, List<UserStruct>> allMap = _stuColl.stuAll;
+    Map<String, List<UserStruct>> todayChosenMap = _stuColl.todayChosenMap;
 
     allMap.forEach((key, value) {
       for (var element in value) {
-        _easyList.add('$key|$element');
+        _easyList.add(element);
       }
     });
 
     todayChosenMap.forEach((key, value) {
       for (var element in value) {
-        _easyList.remove('$key|$element');
+        _easyList.remove(element);
       }
     });
   }
@@ -121,7 +110,10 @@ class _HomePageState extends State<HomePage> {
                   if (_easyList.isEmpty) {
                     toastification.show(
                       context: context,
-                      title: const Text('全部都抽过一遍啦',style: TextStyle(fontFamily: 'HanSansCN'),),
+                      title: const Text(
+                        '全部都抽过一遍啦',
+                        style: TextStyle(fontFamily: 'HanSansCN'),
+                      ),
                       autoCloseDuration: const Duration(seconds: 3),
                       type: ToastificationType.success,
                       style: ToastificationStyle.minimal,

@@ -15,7 +15,6 @@ class _DemoPageState extends State<DemoPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    // TODO: lack of content
   }
 
   @override

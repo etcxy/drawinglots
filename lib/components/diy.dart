@@ -1,4 +1,4 @@
-import 'package:drawinglots/model/stu_model.dart';
+import 'package:drawinglots/model/user_struct.dart';
 import 'package:flutter/material.dart';
 
 import 'combination_widget.dart';

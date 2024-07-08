@@ -39,7 +39,6 @@
 //   final bool isTestMode; // True for integration tests.
 //
 //   double textScaleFactor(BuildContext context,{bool useSentinel = false}){
-//     //TODO
 //     return 1.0;
 //   }
 //

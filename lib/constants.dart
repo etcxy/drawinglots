@@ -1,4 +1,4 @@
+class GlobalVariable {
+  static double systemTextScaleFactorOption = -1;
+}
 
-
-/// 全局变量池
-const double systemTextScaleFactorOption = -1;

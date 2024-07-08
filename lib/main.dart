@@ -1,11 +1,16 @@
 // lib/main.dart
 
+import 'dart:convert';
+
 import 'package:drawinglots/page/home.dart';
 import 'package:drawinglots/page/import.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+
+import 'Utils.dart';
+import 'model/user_struct.dart';
 
 var logger = Logger(
   printer: PrettyPrinter(),
@@ -16,8 +21,6 @@ var loggerNoStack = Logger(
 );
 
 void main() async {
-  loggerNoStack.i('Info message');
-
   //数据持久化 初始化
   await GetStorage.init();
 
@@ -42,30 +45,16 @@ class _MyAppState extends State<MyApp> {
   int _itermPage = 1;
   final _box = GetStorage();
 
-  void debugGenerateMap() {
-    _box.erase();
-    //初始化数据
-    if (!_box.hasData('allMap')) {
-      _box.write('allMap', {
-        "计算机一班": ["202101&张三", "202102&李四", "202103&王五", "202104&赵六"],
-        "计算机二班": ["202111&张1", "202112&李2", "202113&王3", "202114&赵4"],
-      });
-    }
-
-    if (!_box.hasData('todayChosenMap')) {
-      _box.write('todayChosenMap', {
-        "计算机一班": ["202104&赵六"],
-      });
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    debugGenerateMap();
+
+    // Utils.debugGenerateMap(_box);
+    Utils.generateRandomStudents(_box, 5, 1);
+
     StudentCollection stu =
         Provider.of<StudentCollection>(context, listen: false);
-    stu.init();
+    stu.initData();
   }
 
   @override
@@ -136,44 +125,57 @@ class _MyAppState extends State<MyApp> {
 }
 
 class StudentCollection with ChangeNotifier {
-  Map<String, List<String>> _studentColl = {};
-
   //所有
-  Map<String, List<String>> _stuAll = {};
+  Map<String, List<UserStruct>> _stuAll = {};
 
   //选过
-  Map<String, List<String>> _todayChosenMap = {};
+  Map<String, List<UserStruct>> _todayChosenMap = {};
 
-  Map<String, List<String>> get studentColl => _studentColl;
+  Map<String, List<UserStruct>> get stuAll => _stuAll;
 
-  Map<String, List<String>> get stuAll => _stuAll;
-
-  Map<String, List<String>> get todayChosenMap => _todayChosenMap;
+  Map<String, List<UserStruct>> get todayChosenMap => _todayChosenMap;
 
   final box = GetStorage();
 
-  void init() {
+  void initData() {
     if (box.hasData('allMap')) {
-      _stuAll = box.read('allMap');
+      var allMapStr = box.read("allMap");
+      List<dynamic> allList = List<dynamic>.from(jsonDecode(allMapStr));
+      allList.map((userJson) {
+        var userItem = UserStruct.fromJson(userJson);
+        if (!_stuAll.containsKey(userItem.userGroup)) {
+          _stuAll[userItem.userGroup] = [];
+          _stuAll[userItem.userGroup]!.add(userItem);
+        } else {
+          _stuAll[userItem.userGroup] = [userItem];
+        }
+        return {userItem};
+      }).toList();
     }
     if (box.hasData('todayChosenMap')) {
-      _todayChosenMap = box.read('todayChosenMap');
+      var todayChosenStr = box.read("todayChosenMap");
+      List<dynamic> todayChosenList =
+          List<dynamic>.from(jsonDecode(todayChosenStr));
+      todayChosenList.map((userJson) {
+        var userItem = UserStruct.fromJson(userJson);
+        if (!_stuAll.containsKey(userItem.userGroup)) {
+          _todayChosenMap[userItem.userGroup] = [];
+          _todayChosenMap[userItem.userGroup]!.add(userItem);
+        } else {
+          _todayChosenMap[userItem.userGroup] = [userItem];
+        }
+      });
     }
-    // notifyListeners();
   }
 
   /// 导入功能:
   /// 1. 导入数据
   /// 2. 清空todayChosenMap
-  Future<void> importMap(Map<String, List<String>> map) async {
+  Future<void> importMap(Map<String, List<UserStruct>> map) async {
     _stuAll.clear();
     _todayChosenMap.clear();
-
     _stuAll.addAll(map);
-    logger.d(map);
-
     flushAllMap();
-    // notifyListeners();
   }
 
   /// 清空所有map
@@ -187,33 +189,33 @@ class StudentCollection with ChangeNotifier {
   void add2Map(String className, String stuName) {}
 
   /// 往todayChosenMap里添加
-  void add2TodayChosenMap(String className, String stuName) {
-    if (_todayChosenMap.containsKey(className)) {
-      _todayChosenMap[className]?.add(stuName);
+  void add2TodayChosenMap(UserStruct user) {
+    if (_todayChosenMap.containsKey(user.userGroup)) {
+      _todayChosenMap[user.userGroup]?.add(user);
     } else {
-      _todayChosenMap[className] = [stuName];
+      _todayChosenMap[user.userGroup] = [];
+      _todayChosenMap[user.userGroup]?.add(user);
     }
-    // notifyListeners();
   }
 
   /// 删除todayChosenMap里的数据
-  void deleteFromTodayChosenMap(String className, String stuName) {
-    _todayChosenMap[className]?.remove(stuName);
+  void deleteFromTodayChosenMap(UserStruct user) {
+    _todayChosenMap[user.userGroup]?.remove(user);
   }
 
   /// 重置todayChosenMap里的数据
   void resetTodayChosenMap() {
     _todayChosenMap.clear();
-    box.write('todayChosenMap', _todayChosenMap);
+    box.write('todayChosenMap', jsonEncode(_todayChosenMap));
   }
 
   /// 保存数据到本地
   void flushChosenMap() {
-    box.write('todayChosenMap', _todayChosenMap);
+    box.write('todayChosenMap', jsonEncode(_todayChosenMap));
   }
 
   void flushAllMap() {
-    box.write('allMap', _stuAll);
+    box.write('allMap', jsonEncode(_stuAll));
   }
 }
 
