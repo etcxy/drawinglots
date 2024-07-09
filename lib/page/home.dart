@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   final List<UserStruct> _easyList = [];
   late StudentCollection _stuColl;
 
-  List<bool> _selecteds = [false, false, true];
+  List<bool> _selected = [false, false, true];
 
   @override
   void initState() {
