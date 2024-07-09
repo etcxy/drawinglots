@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:drawinglots/components/combination_widget.dart';
+import 'package:drawinglots/constants.dart';
 import 'package:drawinglots/main.dart';
 import 'package:drawinglots/model/user_struct.dart';
 import 'package:flutter/material.dart';
@@ -21,14 +22,13 @@ class _HomePageState extends State<HomePage> {
 
   final List<UserStruct> _easyList = [];
   late StudentCollection _stuColl;
-  bool _isFirst = false; // 是否是第一次进入
+
+  List<bool> _selecteds = [false, false, true];
 
   @override
   void initState() {
-    //TODO 调查清楚为什么这里会多次被调用，按理说init方法只会被调用一次
-    // logger.d('执行initstate');
-    // _isFirst = false;
     super.initState();
+    logger.d('home initState');
 
     _stuColl = context.read<StudentCollection>();
 
@@ -71,13 +71,9 @@ class _HomePageState extends State<HomePage> {
     //每次进入页面，都重新初始化easylist列表
     resetEasyList();
 
-    // logger.d(_easyList);
-    // logger.d(_stuColl.stuAll);
-    // logger.d(_stuColl.todayChosenMap);
-
-    if (_isFirst) {
+    if (GlobalVariable.NEED_TIMPS) {
       Future.delayed(
-          Duration(seconds: 1),
+          const Duration(seconds: 1),
           () => {
                 toastification.show(
                   context: context,
@@ -88,69 +84,99 @@ class _HomePageState extends State<HomePage> {
                   style: ToastificationStyle.flat,
                 )
               });
-      _isFirst = false;
+      GlobalVariable.NEED_TIMPS = false;
     }
 
-    return SizedBox(
-      width: double.infinity,
-      height: double.infinity,
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CombinationWidget(
-              model: _thisStu,
+    return ConstrainedBox(
+      constraints: const BoxConstraints.expand(),
+      child: Stack(
+        alignment: Alignment.bottomCenter, //指定未定位或部分定位widget的对齐方式
+        children: <Widget>[
+          Positioned(
+            right: 8.0,
+            child: ToggleButtons(
+              selectedColor: Colors.orange,
+              fillColor: Colors.red,
+              renderBorder: false,
+              borderRadius: BorderRadius.circular(30),
+              hoverColor: Colors.cyan,
+              isSelected: _selecteds,
+              onPressed: (index) {
+                setState(() {
+                  logger.d('点击了$index');
+                  _selecteds[index] = !_selecteds[index];});
+              },
+              children: const [
+                Icon(Icons.local_cafe),
+                Icon(Icons.fastfood),
+                Icon(Icons.cake),
+              ],
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 5,
-              child: const Divider(),
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  if (_easyList.isEmpty) {
-                    toastification.show(
-                      context: context,
-                      title: const Text(
-                        '全部都抽过一遍啦',
-                        style: TextStyle(fontFamily: 'HanSansCN'),
-                      ),
-                      autoCloseDuration: const Duration(seconds: 3),
-                      type: ToastificationType.success,
-                      style: ToastificationStyle.minimal,
-                    );
-                    return;
-                  }
-                  // setTask(100);
-                  randomStu();
-                  context.read<StuReady>().inVisible();
-                  globalKey.currentState?.play();
+          ),
+          SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CombinationWidget(
+                    model: _thisStu,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 5,
+                    child: const Divider(),
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        if (_easyList.isEmpty) {
+                          toastification.show(
+                            context: context,
+                            title: const Text(
+                              '全部都抽过一遍啦',
+                              style: TextStyle(fontFamily: 'HanSansCN'),
+                            ),
+                            autoCloseDuration: const Duration(seconds: 3),
+                            type: ToastificationType.success,
+                            style: ToastificationStyle.minimal,
+                          );
+                          return;
+                        }
+                        // setTask(100);
+                        randomStu();
+                        context.read<StuReady>().inVisible();
+                        globalKey.currentState?.play();
 
-                  Future.delayed(
-                      Duration(
-                          milliseconds:
-                              context.read<StuReady>().rollDuration * 1000 +
-                                  20),
-                      () => {
-                            setState(() {
-                              context.read<StuReady>().visible();
-                            }),
-                          });
-                },
-                onLongPress: () {
-                  toastification.show(
-                    context: context,
-                    // optional if you use ToastificationWrapper
-                    title: const Text('被选中的名单已重置'),
-                    autoCloseDuration: const Duration(seconds: 3),
-                    type: ToastificationType.success,
-                    style: ToastificationStyle.flat,
-                  );
-                  _stuColl.resetTodayChosenMap();
-                  resetEasyList();
-                },
-                child: const Text('Go!')),
-          ],
-        ),
+                        Future.delayed(
+                            Duration(
+                                milliseconds:
+                                    context.read<StuReady>().rollDuration *
+                                            1000 +
+                                        20),
+                            () => {
+                                  setState(() {
+                                    context.read<StuReady>().visible();
+                                  }),
+                                });
+                      },
+                      onLongPress: () {
+                        toastification.show(
+                          context: context,
+                          // optional if you use ToastificationWrapper
+                          title: const Text('被选中的名单已重置'),
+                          autoCloseDuration: const Duration(seconds: 3),
+                          type: ToastificationType.success,
+                          style: ToastificationStyle.flat,
+                        );
+                        _stuColl.resetTodayChosenMap();
+                        resetEasyList();
+                      },
+                      child: const Text('Go!')),
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

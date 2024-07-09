@@ -20,11 +20,6 @@ class ImportPage extends StatefulWidget {
 class _ImportPageState extends State<ImportPage> {
   Map<String, List<UserStruct>> iStuAllMap = {};
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   Widget build(BuildContext context) {
     StudentCollection _readStuColl = context.read<StudentCollection>();
     iStuAllMap = _readStuColl.stuAll;
