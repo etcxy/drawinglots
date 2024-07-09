@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:drawinglots/page/demo.dart';
 import 'package:drawinglots/page/home.dart';
 import 'package:drawinglots/page/import.dart';
 import 'package:flutter/material.dart';
@@ -41,14 +42,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  //TODO 这玩意show 什么
   bool _isShow = true;
-  int _itermPage = 1;
+  int _itermPage = 0;
   final _box = GetStorage();
 
   @override
   void initState() {
     super.initState();
-
     // Utils.debugGenerateMap(_box);
     Utils.generateRandomStudents(_box, 5, 1);
 
@@ -74,7 +75,7 @@ class _MyAppState extends State<MyApp> {
             tooltip: "主页",
             onPressed: () {
               setState(() {
-                _itermPage = 1;
+                _itermPage = 0;
                 _isShow = !_isShow;
               });
             },
@@ -85,7 +86,7 @@ class _MyAppState extends State<MyApp> {
               tooltip: "设置",
               onPressed: () {
                 setState(() {
-                  _itermPage = 2;
+                  _itermPage = 1;
                 });
               },
             ),
@@ -94,7 +95,7 @@ class _MyAppState extends State<MyApp> {
               tooltip: "导入",
               onPressed: () {
                 setState(() {
-                  _itermPage = 3;
+                  _itermPage = 1;
                   _isShow = !_isShow;
                 });
               },
@@ -106,19 +107,23 @@ class _MyAppState extends State<MyApp> {
           ],
         ),
         body: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/pix.jpg"),
-                fit: BoxFit.cover,
-              ),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/pix.jpg"),
+              fit: BoxFit.cover,
             ),
-            child: _itermPage == 1
-                ? const HomePage()
-                : _itermPage == 2
-                    ? const ImportPage()
-                    : Container()),
+          ),
+          child: IndexedStack(
+            index: _itermPage,
+            children: const [
+              HomePage(),
+              ImportPage(),
+              DemoPage(slug: '占位用'),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -126,10 +131,10 @@ class _MyAppState extends State<MyApp> {
 
 class StudentCollection with ChangeNotifier {
   //所有
-  Map<String, List<UserStruct>> _stuAll = {};
+  final Map<String, List<UserStruct>> _stuAll = {};
 
   //选过
-  Map<String, List<UserStruct>> _todayChosenMap = {};
+  final Map<String, List<UserStruct>> _todayChosenMap = {};
 
   Map<String, List<UserStruct>> get stuAll => _stuAll;
 

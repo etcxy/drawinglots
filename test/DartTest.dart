@@ -111,7 +111,7 @@ List<UserStruct> generateRandomStudents(int count) {
   return list;
 }
 
-void main() {
+void maidfn() {
   var list = generateRandomStudents(2);
   GetStorage.init();
 
@@ -123,4 +123,27 @@ void main() {
   var list2 =
       emptyList.map((userJson) => UserStruct.fromJson(userJson)).toList();
   print(list2);
+}
+
+
+void main() {
+  int min = 1;
+  int max = 10;
+  List<int> weights = [5, 5, 0, 1, 0, 0, 0, 0, 0, 0]; // 权重列表
+
+  int randomNumber = getWeightedRandomNumber(min, max, weights);
+  print('生成的随机数: $randomNumber');
+}
+
+int getWeightedRandomNumber(int min, int max, List<int> weights) {
+  Random random = Random();
+  int totalWeight = weights.fold(0, (sum, weight) => sum + weight);
+  int randomIndex = random.nextInt(totalWeight);
+  for (int i = 0; i < max - min + 1; i++) {
+    if (randomIndex < weights[i]) {
+      return i + min;
+    }
+    randomIndex -= weights[i];
+  }
+  return min; // 如果没有找到随机数，默认返回最小值
 }

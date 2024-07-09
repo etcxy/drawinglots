@@ -31,9 +31,6 @@ class _HomePageState extends State<HomePage> {
     logger.d('home initState');
 
     _stuColl = context.read<StudentCollection>();
-
-    // 初始化easylist
-    resetEasyList();
   }
 
   /// 随机名单
@@ -100,11 +97,12 @@ class _HomePageState extends State<HomePage> {
               renderBorder: false,
               borderRadius: BorderRadius.circular(30),
               hoverColor: Colors.cyan,
-              isSelected: _selecteds,
+              isSelected: _selected,
               onPressed: (index) {
                 setState(() {
                   logger.d('点击了$index');
-                  _selecteds[index] = !_selecteds[index];});
+                  _selected[index] = !_selected[index];
+                });
               },
               children: const [
                 Icon(Icons.local_cafe),
