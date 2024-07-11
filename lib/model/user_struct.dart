@@ -2,8 +2,11 @@ class UserStruct {
   String _userGroup; //学生组别
   String _userID; //学生学号
   String _userName; //学生姓名
+  int? weight; //权重
+
   //构造函数语法糖，为属性赋值
-  UserStruct(this._userGroup, this._userID, this._userName);
+  UserStruct(this._userGroup, this._userID, this._userName, {this.weight = 50});
+
   // UserStruct({this._userGroup, this._userID, this._userName});
 
   //toString方法重写

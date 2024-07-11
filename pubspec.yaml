@@ -112,4 +112,7 @@ flutter_intl:
   fonts:
   - family: HanSansCN
     fonts:
-      - asset: assets/fonts/SourceHanSansCN-Normal.ttf
+      - asset: fonts/SourceHanSansCN-Normal.ttf
+  - family: MiSans
+    fonts:
+      - asset: assets/fonts/MiSans-Regular.ttf

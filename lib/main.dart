@@ -62,10 +62,10 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'HanSansCN'),
+      // theme: ThemeData(fontFamily: 'HanSansCN'),
+
       home: Scaffold(
         appBar: AppBar(
-          // backgroundColor: ,
           title: const Text('biu-biu-biu'),
           //标题居中
           centerTitle: false,

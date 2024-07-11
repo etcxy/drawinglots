@@ -56,7 +56,8 @@ class Utils {
 
     for (int i = 0; i < generateCount; i++) {
       generateList.add(UserStruct(groupList[r.nextInt(groupList.length)],
-          '${generateCount + i}', nameList[r.nextInt(nameList.length)]));
+          '${generateCount + i}', nameList[r.nextInt(nameList.length)],
+          weight: 10));
     }
     box.write('allMap', jsonEncode(generateList));
 

@@ -28,8 +28,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    logger.d('home initState');
-
     _stuColl = context.read<StudentCollection>();
   }
 
@@ -75,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                 toastification.show(
                   context: context,
                   // optional if you use ToastificationWrapper
-                  title: const Text('长按按钮，可重置被选中的名单'),
+                  title: const Text('长按按钮，可重置被选中的名单 被选中的名单已重置'),
                   autoCloseDuration: const Duration(seconds: 3),
                   type: ToastificationType.info,
                   style: ToastificationStyle.flat,
@@ -89,8 +87,13 @@ class _HomePageState extends State<HomePage> {
       child: Stack(
         alignment: Alignment.bottomCenter, //指定未定位或部分定位widget的对齐方式
         children: <Widget>[
+          const Text(
+            'designer by 1000000000',
+            // style: TextStyle(fontFamily: 'MiSans'),
+          ),
           Positioned(
             right: 8.0,
+            bottom: 12,
             child: ToggleButtons(
               selectedColor: Colors.orange,
               fillColor: Colors.red,
@@ -100,14 +103,13 @@ class _HomePageState extends State<HomePage> {
               isSelected: _selected,
               onPressed: (index) {
                 setState(() {
-                  logger.d('点击了$index');
                   _selected[index] = !_selected[index];
                 });
               },
               children: const [
                 Icon(Icons.local_cafe),
                 Icon(Icons.fastfood),
-                Icon(Icons.cake),
+                Text("hello world"),
               ],
             ),
           ),
