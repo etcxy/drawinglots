@@ -127,12 +127,26 @@ void maidfn() {
 
 
 void main() {
-  int min = 1;
-  int max = 10;
-  List<int> weights = [5, 5, 0, 1, 0, 0, 0, 0, 0, 0]; // 权重列表
+  DateTime now = DateTime.now();
 
-  int randomNumber = getWeightedRandomNumber(min, max, weights);
-  print('生成的随机数: $randomNumber');
+// 提取年、月、日
+  int year = now.year;
+  int month = now.month;
+  int day = now.day;
+
+  String current = '$year-$month-$day';
+
+  if(current=='2024-7-11'){
+    print('ok');
+  }
+
+
+  // int min = 1;
+  // int max = 10;
+  // List<int> weights = [5, 5, 0, 1, 0, 0, 0, 0, 0, 0]; // 权重列表
+  //
+  // int randomNumber = getWeightedRandomNumber(min, max, weights);
+  // print('生成的随机数: $randomNumber');
 }
 
 int getWeightedRandomNumber(int min, int max, List<int> weights) {

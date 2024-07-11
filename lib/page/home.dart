@@ -23,12 +23,13 @@ class _HomePageState extends State<HomePage> {
   final List<UserStruct> _easyList = [];
   late StudentCollection _stuColl;
 
-  List<bool> _selected = [false, false, true];
+  List<bool> _selected = [];
 
   @override
   void initState() {
     super.initState();
     _stuColl = context.read<StudentCollection>();
+    _selected = List.from(_stuColl.selected);
   }
 
   /// 随机名单
@@ -73,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                 toastification.show(
                   context: context,
                   // optional if you use ToastificationWrapper
-                  title: const Text('长按按钮，可重置被选中的名单 被选中的名单已重置'),
+                  title: const Text('长按按钮，可重置被选中的名单'),
                   autoCloseDuration: const Duration(seconds: 3),
                   type: ToastificationType.info,
                   style: ToastificationStyle.flat,
@@ -81,6 +82,9 @@ class _HomePageState extends State<HomePage> {
               });
       GlobalVariable.NEED_TIMPS = false;
     }
+
+    var groupNums = _stuColl.stuAll.length;
+    var groupList = _stuColl.stuAll.keys.toList();
 
     return ConstrainedBox(
       constraints: const BoxConstraints.expand(),
@@ -95,22 +99,18 @@ class _HomePageState extends State<HomePage> {
             right: 8.0,
             bottom: 12,
             child: ToggleButtons(
-              selectedColor: Colors.orange,
-              fillColor: Colors.red,
-              renderBorder: false,
+              selectedColor: Colors.black,
+              fillColor: Colors.blue,
+              renderBorder: true,
               borderRadius: BorderRadius.circular(30),
-              hoverColor: Colors.cyan,
+              hoverColor: Colors.blueGrey,
               isSelected: _selected,
               onPressed: (index) {
                 setState(() {
                   _selected[index] = !_selected[index];
                 });
               },
-              children: const [
-                Icon(Icons.local_cafe),
-                Icon(Icons.fastfood),
-                Text("hello world"),
-              ],
+              children: _getChildList(groupList),
             ),
           ),
           SizedBox(
@@ -179,5 +179,13 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  List<Widget> _getChildList(List<String> groupName) {
+    List<Widget> list = [];
+    for (var element in groupName) {
+      list.add(Container(margin: const EdgeInsets.fromLTRB(8, 0, 8, 0), child: Text(element)));
+    }
+    return list;
   }
 }

@@ -136,13 +136,19 @@ class StudentCollection with ChangeNotifier {
   //选过
   final Map<String, List<UserStruct>> _todayChosenMap = {};
 
+  List<bool> _selected = [];
+
   Map<String, List<UserStruct>> get stuAll => _stuAll;
 
   Map<String, List<UserStruct>> get todayChosenMap => _todayChosenMap;
 
+  List<bool> get selected => _selected;
+
   final box = GetStorage();
 
+  ///初始化数据
   void initData() {
+    ///初始化allMap，这里面包含了所有的学生
     if (box.hasData('allMap')) {
       var allMapStr = box.read("allMap");
       List<dynamic> allList = List<dynamic>.from(jsonDecode(allMapStr));
@@ -157,20 +163,36 @@ class StudentCollection with ChangeNotifier {
         return {userItem};
       }).toList();
     }
-    if (box.hasData('todayChosenMap')) {
-      var todayChosenStr = box.read("todayChosenMap");
-      List<dynamic> todayChosenList =
-          List<dynamic>.from(jsonDecode(todayChosenStr));
-      todayChosenList.map((userJson) {
-        var userItem = UserStruct.fromJson(userJson);
-        if (!_stuAll.containsKey(userItem.userGroup)) {
-          _todayChosenMap[userItem.userGroup] = [];
-          _todayChosenMap[userItem.userGroup]!.add(userItem);
-        } else {
-          _todayChosenMap[userItem.userGroup] = [userItem];
-        }
-      });
+
+    ///今天被选中的学生
+    DateTime now = DateTime.now();
+
+    // 提取年、月、日
+    int year = now.year;
+    int month = now.month;
+    int day = now.day;
+
+    String current = '$year-$month-$day';
+
+    if (box.hasData('latest_time') && current == box.read("latest_time")) {
+      if (box.hasData('todayChosenMap')) {
+        var todayChosenStr = box.read("todayChosenMap");
+        List<dynamic> todayChosenList =
+            List<dynamic>.from(jsonDecode(todayChosenStr));
+        todayChosenList.map((userJson) {
+          var userItem = UserStruct.fromJson(userJson);
+          if (!_stuAll.containsKey(userItem.userGroup)) {
+            _todayChosenMap[userItem.userGroup] = [];
+            _todayChosenMap[userItem.userGroup]!.add(userItem);
+          } else {
+            _todayChosenMap[userItem.userGroup] = [userItem];
+          }
+        });
+      }
     }
+
+    ///初始化selected
+    _selected = List.from(_stuAll.keys).map((key) => true).toList();
   }
 
   /// 导入功能:
