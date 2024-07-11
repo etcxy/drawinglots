@@ -131,7 +131,7 @@ class _ImportPageState extends State<ImportPage> {
           if (row[0] == "姓名" || row[0] == "学号") {
             continue;
           }
-          pageList.add(UserStruct(sheet, row[0], row[1]));
+          pageList.add(UserStruct(sheet, '${row[0]}', '${row[1]}'));
         }
         readListFromFile[sheet] = pageList;
       }
