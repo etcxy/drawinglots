@@ -131,18 +131,19 @@ class _MyAppState extends State<MyApp> {
 
 class StudentCollection with ChangeNotifier {
   //所有
-  final Map<String, List<UserStruct>> _stuAll = {};
+  Map<String, List<UserStruct>> _stuAll = {};
 
   //选过
-  final Map<String, List<UserStruct>> _todayChosenMap = {};
+  Map<String, List<UserStruct>> _todayChosenMap = {};
 
-  List<bool> _selected = [];
+  // List<bool> _selected = [];
+  Map<String, bool> _selected = {};
 
   Map<String, List<UserStruct>> get stuAll => _stuAll;
 
   Map<String, List<UserStruct>> get todayChosenMap => _todayChosenMap;
 
-  List<bool> get selected => _selected;
+  Map<String, bool> get selected => _selected;
 
   final box = GetStorage();
 
@@ -192,27 +193,44 @@ class StudentCollection with ChangeNotifier {
     }
 
     ///初始化selected
-    _selected = List.from(_stuAll.keys).map((key) => true).toList();
+    if (box.hasData('selected')) {
+      _selected = jsonDecode(box.read("selected"));
+    } else {
+      _stuAll.keys.forEach((element) {
+        _selected[element] = true;
+      });
+    }
   }
 
   /// 导入功能:
-  /// 1. 导入数据
-  /// 2. 清空todayChosenMap
+  /// 1. 清空所有数据结构
+  /// 2. 初始化所有数据结构
   Future<void> importMap(Map<String, List<UserStruct>> map) async {
+    logger.d('importMap');
     _stuAll.clear();
+    _selected.clear();
     _todayChosenMap.clear();
+
     _stuAll.addAll(map);
+
+    _stuAll.keys.forEach((element) {
+      _selected[element] = true;
+    });
     flushAllMap();
+
+    notifyListeners();
   }
 
   /// 清空所有map
   void eraseMap() {
     _stuAll.clear();
     _todayChosenMap.clear();
+    _selected.clear();
+
     notifyListeners();
   }
 
-  /// 往allMap里添加
+  /// cwasZ
   void add2Map(String className, String stuName) {}
 
   /// 往todayChosenMap里添加
@@ -243,6 +261,10 @@ class StudentCollection with ChangeNotifier {
 
   void flushAllMap() {
     box.write('allMap', jsonEncode(_stuAll));
+  }
+
+  void flushSelected() {
+    box.write('selected', jsonEncode(_selected));
   }
 }
 

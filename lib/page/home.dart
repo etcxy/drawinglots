@@ -29,7 +29,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _stuColl = context.read<StudentCollection>();
-    _selected = List.from(_stuColl.selected);
   }
 
   /// 随机名单
@@ -83,8 +82,12 @@ class _HomePageState extends State<HomePage> {
       GlobalVariable.NEED_TIMPS = false;
     }
 
-    var groupNums = _stuColl.stuAll.length;
-    var groupList = _stuColl.stuAll.keys.toList();
+    var groupList = _stuColl.selected.keys.toList();
+    _selected = List.from(_stuColl.selected.values);
+
+    logger.d(groupList);
+    logger.d(_stuColl.selected);
+
 
     return ConstrainedBox(
       constraints: const BoxConstraints.expand(),
@@ -102,12 +105,13 @@ class _HomePageState extends State<HomePage> {
               selectedColor: Colors.black,
               fillColor: Colors.blue,
               renderBorder: true,
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(25),
               hoverColor: Colors.blueGrey,
               isSelected: _selected,
               onPressed: (index) {
                 setState(() {
                   _selected[index] = !_selected[index];
+                  _stuColl.selected[groupList[index]] = _selected[index];
                 });
               },
               children: _getChildList(groupList),
@@ -184,7 +188,8 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _getChildList(List<String> groupName) {
     List<Widget> list = [];
     for (var element in groupName) {
-      list.add(Container(margin: const EdgeInsets.fromLTRB(8, 0, 8, 0), child: Text(element)));
+      list.add(Container(
+          margin: const EdgeInsets.fromLTRB(8, 0, 8, 0), child: Text(element)));
     }
     return list;
   }
