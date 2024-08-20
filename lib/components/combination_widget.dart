@@ -1,5 +1,5 @@
 import 'package:drawinglots/components/random_text_reveal.dart';
-import 'package:drawinglots/main.dart';
+import 'package:drawinglots/oldmain/main.dart';
 import 'package:drawinglots/model/user_struct.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

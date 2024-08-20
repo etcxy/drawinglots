@@ -1,5 +1,5 @@
 class UserStruct {
-  String _userGroup; //学生组别
+  String _userGroup;
   String _userID; //学生学号
   String _userName; //学生姓名
   int? weight; //权重

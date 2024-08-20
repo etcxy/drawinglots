@@ -3,6 +3,8 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:drawinglots/model/user_struct.dart';
+import 'package:drawinglots/model/user_struct2.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
 
@@ -125,21 +127,48 @@ void maidfn() {
   print(list2);
 }
 
-
 void main() {
-  DateTime now = DateTime.now();
+  // Set<String> set = {'1','33'};
+  // Set<String> set2 = {'3','2'};
+  //
+  // print(set.intersection(set2).length);
+  //
+  // RxSet<String> names = RxSet<String>();
+  // names.clear();
+  // var set3 = names.toSet();
+  //
+  // print(set3);
 
-// 提取年、月、日
-  int year = now.year;
-  int month = now.month;
-  int day = now.day;
+  // List<UserStruct2> list = [];
+  // Set<String> tags = {};
+  //
+  // list.add(UserStruct2('1', 'tom', ['1', '2', '3'].toSet()));
+  // list.add(UserStruct2('2', 'tomas', ['4', '2', '3'].toSet()));
+  // list.add(UserStruct2('3', 'tomasLee', ['51', '16', '3'].toSet()));
+  //
+  // list.map((e) => e.userTags).forEach((e) => tags.addAll(e));
+  // print('$tags');
 
-  String current = '$year-$month-$day';
+  Set<String> set1 = {'1','2','3','4'};
+  Set<String> set2 = {'1','6'};
 
-  if(current=='2024-7-11'){
-    print('ok');
-  }
+  print(set2.difference(set1));
 
+}
+
+void main3() {
+//   DateTime now = DateTime.now();
+//
+// // 提取年、月、日
+//   int year = now.year;
+//   int month = now.month;
+//   int day = now.day;
+//
+//   String current = '$year-$month-$day';
+//
+//   if(current=='2024-7-11'){
+//     print('ok');
+//   }
 
   // int min = 1;
   // int max = 10;
@@ -147,6 +176,8 @@ void main() {
   //
   // int randomNumber = getWeightedRandomNumber(min, max, weights);
   // print('生成的随机数: $randomNumber');
+
+  Map<String, bool> map = {"hello": true, "world": false};
 }
 
 int getWeightedRandomNumber(int min, int max, List<int> weights) {

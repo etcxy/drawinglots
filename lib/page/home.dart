@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:drawinglots/components/combination_widget.dart';
 import 'package:drawinglots/constants.dart';
-import 'package:drawinglots/main.dart';
+import 'package:drawinglots/oldmain/main.dart';
 import 'package:drawinglots/model/user_struct.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
