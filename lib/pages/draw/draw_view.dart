@@ -1,7 +1,7 @@
+import 'package:drawinglots/components/randomtext/random_text_view.dart';
 import 'package:drawinglots/state/global_st_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import 'draw_logic.dart';
@@ -13,10 +13,7 @@ class DrawPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final logic = Get.find<DrawLogic>();
     final state = Get.find<DrawLogic>().state;
-
     var glb_stLogic = Get.find<Global_stLogic>();
-
-    final box = GetStorage();
 
     return Container(
         width: MediaQuery.of(context).size.width,
@@ -36,26 +33,6 @@ class DrawPage extends StatelessWidget {
                 'designer by 1000000000',
                 // style: TextStyle(fontFamily: 'MiSans'),
               ),
-              // Positioned(
-              //   right: 8.0,
-              //   bottom: 12,
-              //   child: ToggleButtons(
-              //     selectedColor: Colors.black,
-              //     fillColor: Colors.blue,
-              //     renderBorder: true,
-              //     borderRadius: BorderRadius.circular(25),
-              //     hoverColor: Colors.blueGrey,
-              //     // isSelected: _selected,
-              //     isSelected: [true, false, false],
-              //     onPressed: (index) {
-              //       // setState(() {
-              //       //   _selected[index] = !_selected[index];
-              //       //   _stuColl.selected[groupList[index]] = _selected[index];
-              //       // });
-              //     },
-              //     children: _getChildList(groupList),
-              //   ),
-              // ),
               Positioned(
                   right: 1.0,
                   bottom: 1,
@@ -101,14 +78,11 @@ class DrawPage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // CombinationWidget(
-                      //   model: _thisStu,
-                      // ),
+                      Random_textComponent(),
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 5,
                         child: const Divider(),
                       ),
-
                       TDButton(
                         text: 'Go!',
                         icon: TDIcons.chevron_right_double,
@@ -151,4 +125,3 @@ class DrawPage extends StatelessWidget {
         ));
   }
 }
-

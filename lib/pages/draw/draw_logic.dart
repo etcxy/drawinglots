@@ -1,7 +1,7 @@
 import 'dart:math';
 
+import 'package:drawinglots/components/randomtext/random_text_logic.dart';
 import 'package:drawinglots/model/user_entity.dart';
-import 'package:drawinglots/model/user_struct2.dart';
 import 'package:drawinglots/state/global_st_logic.dart';
 import 'package:get/get.dart';
 
@@ -11,6 +11,7 @@ class DrawLogic extends GetxController {
   final DrawState state = DrawState();
 
   final glb_stLogic = Get.find<Global_stLogic>();
+  var randomComponentLogic = Get.find<Random_textLogic>();
 
   @override
   void onReady() {
@@ -25,18 +26,22 @@ class DrawLogic extends GetxController {
     super.onClose();
   }
 
-  UserEntity? getRandomUser() {
+  UserEntity getRandomUser() {
     if (glb_stLogic.state.leftUserList.isEmpty) {
       throw Exception('列表为空');
     }
 
-    var randomUser2 = randomUser();
-    glb_stLogic.state.selectedUserList.add(randomUser2);
+    var user = randomUser();
+    glb_stLogic.state.selectedUserList.add(user);
 
     glb_stLogic.flushAllCollections();
     glb_stLogic.flushAllTags();
     glb_stLogic.debugPrintAll();
-    return randomUser2;
+
+    randomComponentLogic.state.userEntity.value = user;
+    randomComponentLogic.doActionText();
+
+    return user;
   }
 
   // 随机获取一个用户
