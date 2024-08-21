@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:drawinglots/model/user_entity.dart';
 import 'package:drawinglots/model/user_struct2.dart';
 import 'package:drawinglots/state/global_st_logic.dart';
 import 'package:get/get.dart';
@@ -13,7 +14,8 @@ class DrawLogic extends GetxController {
 
   @override
   void onReady() {
-    // TODO: implement onReady
+    glb_stLogic.recoverFromLocalStorage();
+    glb_stLogic.debugPrintAll();
     super.onReady();
   }
 
@@ -23,7 +25,7 @@ class DrawLogic extends GetxController {
     super.onClose();
   }
 
-  UserStruct2? getRandomUser() {
+  UserEntity? getRandomUser() {
     if (glb_stLogic.state.leftUserList.isEmpty) {
       throw Exception('列表为空');
     }
@@ -38,7 +40,7 @@ class DrawLogic extends GetxController {
   }
 
   // 随机获取一个用户
-  UserStruct2 randomUser() {
+  UserEntity randomUser() {
     return glb_stLogic.state
         .leftUserList[Random().nextInt(glb_stLogic.state.leftUserList.length)];
   }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:drawinglots/model/user_entity.dart';
 import 'package:drawinglots/model/user_struct2.dart';
 import 'package:drawinglots/state/global_st_logic.dart';
 import 'package:file_picker/file_picker.dart';
@@ -49,21 +50,22 @@ class Import_fileLogic extends GetxController {
         if (decoder.tables[sheet]!.maxRows < 1) {
           continue;
         }
-        List<UserStruct2> pageList = [];
+        List<UserEntity> pageList = [];
         for (var row in decoder.tables[sheet]!.rows) {
           //TODO  excel数据开关
           if (row[0] == "姓名" || row[0] == "学号") {
             continue;
           }
 
-          Set<String> tagsList = {};
-          tagsList.add(sheet.trim());
+          Set<String> tagsSet = {};
+          tagsSet.add(sheet.trim());
           for (int i = 2; i < row.length; i++) {
             row[i].split(',').forEach((element) {
-              tagsList.add(element.trim());
+              tagsSet.add(element.trim());
             });
           }
-          pageList.add(UserStruct2('${row[0]}', '${row[1]}', tagsList));
+          ;
+          pageList.add(UserEntity('${row[0]}', '${row[1]}', tagsSet));
         }
         //全局导入
         global_stLogic.state.userList = pageList;

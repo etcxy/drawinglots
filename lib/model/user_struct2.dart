@@ -1,3 +1,4 @@
+@Deprecated('序列化原因，弃用，改用UserEntity')
 class UserStruct2 {
   String _userID; //学生学号
   String _userName; //学生姓名
@@ -10,7 +11,7 @@ class UserStruct2 {
   //toString方法重写
   @override
   String toString() {
-    return 'UserStruct2{_userTags: $_userTags, _userID: $_userID, _userName: $_userName}';
+    return 'UserStruct2{_userID: $_userID, _userName: $_userName,_userTags: $_userTags}';
   }
 
   String get userName => _userName;
@@ -34,9 +35,9 @@ class UserStruct2 {
   ///序列化
   Map<String, dynamic> toJson() {
     return {
-      'userTags': _userTags,
       'userID': _userID,
       'userName': _userName,
+      'userTags': _userTags,
     };
   }
 

@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scrollable_list_tab_scroller/scrollable_list_tab_scroller.dart';
 import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
-import 'package:toastification/toastification.dart';
+// import 'package:toastification/toastification.dart';
 
 class ImportPage extends StatefulWidget {
   const ImportPage({super.key});
@@ -110,14 +110,14 @@ class _ImportPageState extends State<ImportPage> {
 
       if (decoder.tables.keys.isEmpty) {
         //判断excel为空，则退出后续逻辑
-        toastification.show(
-          context: context,
-          // optional if you use ToastificationWrapper
-          title: const Text('表格为空，导入失败'),
-          autoCloseDuration: const Duration(seconds: 3),
-          type: ToastificationType.error,
-          style: ToastificationStyle.minimal,
-        );
+        // toastification.show(
+        //   context: context,
+        //   // optional if you use ToastificationWrapper
+        //   title: const Text('表格为空，导入失败'),
+        //   autoCloseDuration: const Duration(seconds: 3),
+        //   type: ToastificationType.error,
+        //   style: ToastificationStyle.minimal,
+        // );
         return false;
       }
 
@@ -141,14 +141,14 @@ class _ImportPageState extends State<ImportPage> {
       _readStuColl.importMap(readListFromFile);
       return true;
     } else {
-      toastification.show(
-        context: context,
-        // optional if you use ToastificationWrapper
-        title: const Text('取消导入'),
-        autoCloseDuration: const Duration(seconds: 3),
-        type: ToastificationType.info,
-        style: ToastificationStyle.minimal,
-      );
+      // toastification.show(
+      //   context: context,
+      //   // optional if you use ToastificationWrapper
+      //   title: const Text('取消导入'),
+      //   autoCloseDuration: const Duration(seconds: 3),
+      //   type: ToastificationType.info,
+      //   style: ToastificationStyle.minimal,
+      // );
       return false;
     }
   }

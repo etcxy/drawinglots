@@ -26,7 +26,7 @@ class _DlhomePageState extends State<DlhomePage>
 
   @override
   void initState() {
-    print('初始化 数据...');
+    print('初始化数据...');
     _tabController = TabController(
         vsync: this, //固定写法
         length: 3 //指定tab长度

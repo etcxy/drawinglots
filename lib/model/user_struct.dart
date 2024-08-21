@@ -1,3 +1,4 @@
+@Deprecated('序列化原因，弃用，改用UserEntity')
 class UserStruct {
   String _userGroup;
   String _userID; //学生学号

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:drawinglots/model/user_entity.dart';
 import 'package:drawinglots/model/user_struct.dart';
 import 'package:drawinglots/model/user_struct2.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -127,7 +128,47 @@ void maidfn() {
   print(list2);
 }
 
-void main() {
+Future<void> mai32n() async {
+  final box = GetStorage();
+
+  List<UserStruct2> list = [];
+  List<UserStruct2> list2 = [];
+  Set<String> tags = {};
+
+  list.add(UserStruct2('1', 'tom', ['1', '2', '3'].toSet()));
+  list.add(UserStruct2('2', 'tomas', ['4', '2', '3'].toSet()));
+  list.add(UserStruct2('3', 'tomasLee', ['51', '16', '3'].toSet()));
+
+  box.write("key", list);
+
+  // list2 = jsonDecode(box.read('key'));
+  print(box.read("key"));
+  print(UserStruct2('1', 'tom', ['1', '2', '3'].toSet()));
+}
+
+main() {
+  // final box = GetStorage();
+
+  List<UserEntity> list = [];
+  List<UserEntity> list2 = [];
+
+  // list.add(UserEntity(userID: '1', userName: 'tom', userTags: {'1', '2', '3'}));
+  // list.add(UserEntity(userID: '2', userName: 'tomas', userTags: {'1', '2', '3'}));
+  // list.add(UserEntity(userID: '3', userName: 'tomasLee', userTags: {'1', '2', '3'}));
+
+  list.add(UserEntity('1', 'tom', {'1', '2', '3'}));
+  list.add(UserEntity('2', 'tomas', {'1', '2', '3'}));
+  list.add(UserEntity('3', 'tomasLee', {'1', '2', '3'}));
+
+  var json = jsonEncode(list);
+  print('json: $json');
+
+  list2 =
+      (jsonDecode(json) as List).map((e) => UserEntity.fromJson(e)).toList();
+  print('list2: $list2');
+}
+
+void main23() {
   // Set<String> set = {'1','33'};
   // Set<String> set2 = {'3','2'};
   //
@@ -149,11 +190,10 @@ void main() {
   // list.map((e) => e.userTags).forEach((e) => tags.addAll(e));
   // print('$tags');
 
-  Set<String> set1 = {'1','2','3','4'};
-  Set<String> set2 = {'1','6'};
+  Set<String> set1 = {'1', '2', '3', '4'};
+  Set<String> set2 = {'1', '6'};
 
   print(set2.difference(set1));
-
 }
 
 void main3() {

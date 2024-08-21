@@ -5,6 +5,7 @@ import 'package:drawinglots/pages/draw/draw_view.dart';
 import 'package:drawinglots/state/global_st_binding.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:logger/logger.dart';
 
 
@@ -16,7 +17,9 @@ var loggerNoStack = Logger(
   printer: PrettyPrinter(methodCount: 0),
 );
 
-void main() {
+Future<void> main() async {
+  await GetStorage.init();
+
   runApp(GetMaterialApp(
     //绑定一个全局的GetxController
     initialBinding: Global_stBinding(),

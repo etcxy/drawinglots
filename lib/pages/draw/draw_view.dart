@@ -1,6 +1,7 @@
 import 'package:drawinglots/state/global_st_logic.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:tdesign_flutter/tdesign_flutter.dart';
 
 import 'draw_logic.dart';
@@ -14,6 +15,8 @@ class DrawPage extends StatelessWidget {
     final state = Get.find<DrawLogic>().state;
 
     var glb_stLogic = Get.find<Global_stLogic>();
+
+    final box = GetStorage();
 
     return Container(
         width: MediaQuery.of(context).size.width,
@@ -105,6 +108,7 @@ class DrawPage extends StatelessWidget {
                         width: MediaQuery.of(context).size.width / 5,
                         child: const Divider(),
                       ),
+
                       TDButton(
                         text: 'Go!',
                         icon: TDIcons.chevron_right_double,
@@ -120,6 +124,8 @@ class DrawPage extends StatelessWidget {
                                 duration: const Duration(milliseconds: 700),
                                 context: context);
                           }
+
+                          glb_stLogic.saveToLocalStorage();
                         },
                         onLongPress: () {
                           glb_stLogic.state.cancelTagSet.clear();
@@ -132,6 +138,8 @@ class DrawPage extends StatelessWidget {
                               direction: IconTextDirection.vertical,
                               duration: const Duration(milliseconds: 500),
                               context: context);
+
+                          glb_stLogic.saveToLocalStorage();
                         },
                       ),
                     ],
@@ -144,14 +152,3 @@ class DrawPage extends StatelessWidget {
   }
 }
 
-List<Widget> _getChildList(Global_stLogic glb_stLogic) {
-  Set<String> tagSet = glb_stLogic.state.tagSet;
-  // Set<String> leftTagSet = glb_stLogic.state.leftTagSet;
-
-  List<TDSelectTag> list = [];
-  for (var element in tagSet) {
-    // list.add();
-  }
-
-  return list;
-}

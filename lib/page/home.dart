@@ -6,7 +6,7 @@ import 'package:drawinglots/oldmain/main.dart';
 import 'package:drawinglots/model/user_struct.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:toastification/toastification.dart';
+// import 'package:toastification/toastification.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -70,14 +70,14 @@ class _HomePageState extends State<HomePage> {
       Future.delayed(
           const Duration(seconds: 1),
           () => {
-                toastification.show(
-                  context: context,
-                  // optional if you use ToastificationWrapper
-                  title: const Text('长按按钮，可重置被选中的名单'),
-                  autoCloseDuration: const Duration(seconds: 3),
-                  type: ToastificationType.info,
-                  style: ToastificationStyle.flat,
-                )
+                // toastification.show(
+                //   context: context,
+                //   // optional if you use ToastificationWrapper
+                //   title: const Text('长按按钮，可重置被选中的名单'),
+                //   autoCloseDuration: const Duration(seconds: 3),
+                //   type: ToastificationType.info,
+                //   style: ToastificationStyle.flat,
+                // )
               });
       GlobalVariable.NEED_TIMPS = false;
     }
@@ -134,16 +134,16 @@ class _HomePageState extends State<HomePage> {
                   ElevatedButton(
                       onPressed: () {
                         if (_easyList.isEmpty) {
-                          toastification.show(
-                            context: context,
-                            title: const Text(
-                              '全部都抽过一遍啦',
-                              style: TextStyle(fontFamily: 'HanSansCN'),
-                            ),
-                            autoCloseDuration: const Duration(seconds: 3),
-                            type: ToastificationType.success,
-                            style: ToastificationStyle.minimal,
-                          );
+                          // toastification.show(
+                          //   context: context,
+                          //   title: const Text(
+                          //     '全部都抽过一遍啦',
+                          //     style: TextStyle(fontFamily: 'HanSansCN'),
+                          //   ),
+                          //   autoCloseDuration: const Duration(seconds: 3),
+                          //   type: ToastificationType.success,
+                          //   style: ToastificationStyle.minimal,
+                          // );
                           return;
                         }
                         // setTask(100);
@@ -164,14 +164,14 @@ class _HomePageState extends State<HomePage> {
                                 });
                       },
                       onLongPress: () {
-                        toastification.show(
-                          context: context,
-                          // optional if you use ToastificationWrapper
-                          title: const Text('被选中的名单已重置'),
-                          autoCloseDuration: const Duration(seconds: 3),
-                          type: ToastificationType.success,
-                          style: ToastificationStyle.flat,
-                        );
+                        // toastification.show(
+                        //   context: context,
+                        //   // optional if you use ToastificationWrapper
+                        //   title: const Text('被选中的名单已重置'),
+                        //   autoCloseDuration: const Duration(seconds: 3),
+                        //   type: ToastificationType.success,
+                        //   style: ToastificationStyle.flat,
+                        // );
                         _stuColl.resetTodayChosenMap();
                         resetEasyList();
                       },

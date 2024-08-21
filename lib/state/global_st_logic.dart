@@ -1,5 +1,9 @@
-import 'package:drawinglots/model/user_struct2.dart';
+import 'dart:convert';
+
+import 'package:drawinglots/model/user_entity.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:intl/intl.dart';
 
 import 'global_st_state.dart';
 
@@ -9,11 +13,13 @@ class Global_stLogic extends GetxController {
   //-----------------------逻辑层方法区-----------------------------------
   @override
   void onReady() {
+    recoverFromLocalStorage();
     super.onReady();
   }
 
   @override
   void onClose() {
+    saveToLocalStorage();
     super.onClose();
   }
 
@@ -73,7 +79,38 @@ class Global_stLogic extends GetxController {
 
     print("tagSet: ${state.tagSet}");
     print("cancelTagSet: ${state.cancelTagSet}");
-    print("selectedTagSet: ${state.selectedTagSet}");
+    // print("selectedTagSet: ${state.selectedTagSet}");
     print("leftTagSet: ${state.leftTagSet}");
+  }
+
+  //保存所有集合数据
+  void saveToLocalStorage() {
+    final box = GetStorage();
+
+    box.write('userList', jsonEncode(state.userList));
+    box.write('selectedUserList', jsonEncode(state.selectedUserList));
+    box.write('leftUserList', jsonEncode(state.leftUserList));
+    box.write('last_time', DateFormat('yyyy-MM-dd').format(DateTime.now()));
+  }
+
+  //从本地恢复所有集合数据
+  void recoverFromLocalStorage() {
+    final box = GetStorage();
+
+    state.userList = (jsonDecode(box.read('userList')) as List)
+        .map((e) => UserEntity.fromJson(e))
+        .toList();
+
+    if (box.read('last_time') ==
+        DateFormat('yyyy-MM-dd').format(DateTime.now())) {
+      state.selectedUserList =
+          (jsonDecode(box.read('selectedUserList')) as List)
+              .map((e) => UserEntity.fromJson(e))
+              .toList();
+      state.leftUserList = (jsonDecode(box.read('leftUserList')) as List)
+          .map((e) => UserEntity.fromJson(e))
+          .toList();
+      flushAllTags();
+    }
   }
 }
