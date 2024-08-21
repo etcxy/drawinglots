@@ -1,3 +1,4 @@
+import 'package:drawinglots/components/randomtext/random_text_logic.dart';
 import 'package:drawinglots/components/randomtext/random_text_view.dart';
 import 'package:drawinglots/state/global_st_logic.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:tdesign_flutter/tdesign_flutter.dart';
 import 'draw_logic.dart';
 
 class DrawPage extends StatelessWidget {
-  const DrawPage({Key? key}) : super(key: key);
+  DrawPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +79,6 @@ class DrawPage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-
                       Random_textComponent(),
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 5,

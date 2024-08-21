@@ -7,6 +7,6 @@ class Global_stBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => Global_stLogic());
-    Get.put(Random_textLogic());
+    Get.lazyPut(() => Random_textLogic());
   }
 }

@@ -1,7 +1,9 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:drawinglots/model/user_entity.dart';
 import 'package:drawinglots/model/user_struct2.dart';
+import 'package:drawinglots/pages/import_file/import_file_view.dart';
 import 'package:drawinglots/state/global_st_logic.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +19,17 @@ class Import_fileLogic extends GetxController {
 
   @override
   void onReady() {
-    super.onReady();
     global_stLogic = Get.find<Global_stLogic>();
+    super.onReady();
   }
 
   @override
   void onClose() {
     super.onClose();
+  }
+
+  void gen() {
+    state.cardStyleData = generateItems(5);
   }
 
   ///导入文件，并同步全局AllMap集合对象中
@@ -78,5 +84,15 @@ class Import_fileLogic extends GetxController {
       TDToast.showFail("导入文件路径有误!", context: context);
       return false;
     }
+  }
+
+  List<CollapseDataItem> generateItems(int numOfItems) {
+    return List.generate(numOfItems, (index) {
+      Random random = Random();
+      return CollapseDataItem(
+        headerValue: '标题 $index ${random.nextInt(1000)}',
+        expandedValue: '$index',
+      );
+    });
   }
 }

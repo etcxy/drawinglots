@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 class Random_textState {
 
-  Rx<UserEntity> userEntity = UserEntity('ID', "用户名", {'用户标签'}).obs;
+  Rx<UserEntity> userEntity = UserEntity('ID', "lucky", {'用户标签'}).obs;
 
   var isShow = false.obs;
 

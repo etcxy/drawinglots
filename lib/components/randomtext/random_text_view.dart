@@ -38,7 +38,7 @@ class _Random_textComponentState extends State<Random_textComponent> {
                   )),
               RandomTextReveal(
                 key: logic.globalKey,
-                initialText: 'lucky~',
+                initialText: state.userEntity.value.userName,
                 shouldPlayOnStart: false,
                 text: state.userEntity.value.userName,
                 duration: Duration(seconds: 2),
@@ -80,11 +80,5 @@ class _Random_textComponentState extends State<Random_textComponent> {
             ],
           )),
     );
-  }
-
-  @override
-  void dispose() {
-    Get.delete<Random_textLogic>();
-    super.dispose();
   }
 }

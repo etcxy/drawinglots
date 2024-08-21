@@ -17,6 +17,7 @@ class DrawLogic extends GetxController {
   void onReady() {
     glb_stLogic.recoverFromLocalStorage();
     glb_stLogic.debugPrintAll();
+    print('onReady');
     super.onReady();
   }
 
