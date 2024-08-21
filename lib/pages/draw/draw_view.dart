@@ -78,6 +78,7 @@ class DrawPage extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+
                       Random_textComponent(),
                       SizedBox(
                         width: MediaQuery.of(context).size.width / 5,

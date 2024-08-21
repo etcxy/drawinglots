@@ -23,7 +23,7 @@ class Random_textLogic extends GetxController {
     state.isShow.value = false;
     globalKey.currentState?.play();
     // 设置一个定时器，10秒后调用doActionText()方法
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 2), () {
       state.isShow.value = true;
     });
   }
