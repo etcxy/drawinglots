@@ -35,14 +35,10 @@ class Global_stLogic extends GetxController {
         .toList();
     // 可用用户列表
     state.couldChosenList.clear();
-    state.leftUserList.forEach((leftUser) {
-      leftUser.userTags.forEach((leftUserTag) {
-        if (!state.cancelTagSet.contains(leftUserTag)) {
-          if (!state.couldChosenList.contains(leftUser)) {
-            state.couldChosenList.add(leftUser);
-          }
-        }
-      });
+    state.couldChosenList.addAll(state.leftUserList);
+    state.cancelTagSet.forEach((cancelTag) {
+      state.couldChosenList
+          .removeWhere((user) => user.userTags.contains(cancelTag));
     });
   }
 

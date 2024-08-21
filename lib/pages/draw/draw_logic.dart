@@ -28,7 +28,7 @@ class DrawLogic extends GetxController {
   }
 
   UserEntity getRandomUser() {
-    if (glb_stLogic.state.leftUserList.isEmpty) {
+    if (glb_stLogic.state.couldChosenList.isEmpty) {
       throw Exception('列表为空');
     }
 
@@ -48,6 +48,6 @@ class DrawLogic extends GetxController {
   // 随机获取一个用户
   UserEntity randomUser() {
     return glb_stLogic.state
-        .leftUserList[Random().nextInt(glb_stLogic.state.leftUserList.length)];
+        .couldChosenList[Random().nextInt(glb_stLogic.state.couldChosenList.length)];
   }
 }

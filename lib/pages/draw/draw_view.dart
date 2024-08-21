@@ -95,7 +95,7 @@ class DrawPage extends StatelessWidget {
                           try {
                             logic.getRandomUser();
                           } catch (e) {
-                            TDToast.showText('已全部中签\n可长按重置',
+                            TDToast.showText('可选用户已全部中签\n可长按重置',
                                 duration: const Duration(milliseconds: 700),
                                 context: context);
                           }
